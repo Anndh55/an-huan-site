@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local log & test artifacts
+.next-server.log
+.login-test.html
+prisma-cli.cmd
+src/app/_test_write.txt
+src/app/_fixed.tsx
+
+# user uploads
+/public/uploads/
+
+# dev database
+prisma/dev.db
+prisma/*.db

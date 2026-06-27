@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  password  String
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages      Message[]
+  photos        Photo[]
+  anniversaries Anniversary[]
+  capsulesSent  TimeCapsule[] @relation("FromUser")
+  capsulesRecv  TimeCapsule[] @relation("ToUser")
+}
+
+model Message {
+  id        String      @id @default(cuid())
+  userId    String
+  content   String
+  type      MessageType
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum MessageType {
+  MESSAGE
+  DIARY
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  imageUrl  String
+  caption   String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Anniversary {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  date      DateTime
+  type      AnniversaryType
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum AnniversaryType {
+  TOGETHER
+  CUSTOM
+}
+
+model TimeCapsule {
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  title      String
+  content    String
+  unlockAt   DateTime
+  createdAt  DateTime @default(now())
+
+  fromUser User @relation("FromUser", fields: [fromUserId], references: [id])
+  toUser   User @relation("ToUser", fields: [toUserId], references: [id])
+}
