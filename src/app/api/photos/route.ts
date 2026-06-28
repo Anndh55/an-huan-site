@@ -9,13 +9,13 @@ export async function GET() {
   try {
     const session = await auth()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Î´µÇÂ¼" }, { status: 401 })
+      return NextResponse.json({ error: "æœªç™»å½•" }, { status: 401 })
     }
     const photos = await getPhotos()
     return NextResponse.json({ photos })
   } catch (error) {
     console.error("Failed to fetch photos:", error)
-    return NextResponse.json({ error: "»ñÈ¡ÕÕÆ¬Ê§°Ü" }, { status: 500 })
+    return NextResponse.json({ error: "è·å–ç…§ç‰‡å¤±è´¥" }, { status: 500 })
   }
 }
 
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   try {
     const session = await auth()
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Î´µÇÂ¼" }, { status: 401 })
+      return NextResponse.json({ error: "æœªç™»å½•" }, { status: 401 })
     }
 
     const formData = await request.formData()
@@ -31,13 +31,13 @@ export async function POST(request: Request) {
     const caption = formData.get("caption") as string | null
 
     if (!file) {
-      return NextResponse.json({ error: "ÇëÑ¡ÔñÍ¼Æ¬ÎÄ¼ş" }, { status: 400 })
+      return NextResponse.json({ error: "è¯·é€‰æ‹©å›¾ç‰‡æ–‡ä»¶" }, { status: 400 })
     }
     if (!ALLOWED_TYPES.includes(file.type)) {
-      return NextResponse.json({ error: "½öÖ§³Ö JPG¡¢PNG¡¢WebP ¸ñÊ½" }, { status: 400 })
+      return NextResponse.json({ error: "ä»…æ”¯æŒ JPGã€PNGã€WebP æ ¼å¼" }, { status: 400 })
     }
     if (file.size > MAX_SIZE) {
-      return NextResponse.json({ error: "Í¼Æ¬´óĞ¡²»ÄÜ³¬¹ı 5MB" }, { status: 400 })
+      return NextResponse.json({ error: "å›¾ç‰‡å¤§å°ä¸èƒ½è¶…è¿‡ 5MB" }, { status: 400 })
     }
 
     // Convert file to base64 data URL and store directly in DB
@@ -49,6 +49,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ photo }, { status: 201 })
   } catch (error) {
     console.error("Failed to upload photo:", error)
-    return NextResponse.json({ error: "ÉÏ´«ÕÕÆ¬Ê§°Ü" }, { status: 500 })
+    return NextResponse.json({ error: "ä¸Šä¼ ç…§ç‰‡å¤±è´¥" }, { status: 500 })
   }
 }
