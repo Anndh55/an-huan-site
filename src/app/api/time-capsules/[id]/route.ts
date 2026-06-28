@@ -84,7 +84,7 @@ export async function PUT(
       if (unlockDate <= new Date()) {
         return NextResponse.json({ error: "解锁时间必须在未来" }, { status: 400 })
       }
-      updates.unlockAt = unlockAt
+      updates.unlockAt = unlockDate.toISOString()
     }
 
     if (Object.keys(updates).length === 0) {

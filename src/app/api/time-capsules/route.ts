@@ -76,7 +76,7 @@ export async function POST(request: Request) {
       toUserId,
       title.trim(),
       content.trim(),
-      unlockAt
+      unlockDate.toISOString()
     )
 
     return NextResponse.json({ capsule }, { status: 201 })
