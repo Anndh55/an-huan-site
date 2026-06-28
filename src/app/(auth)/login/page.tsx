@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import HeartLock from "@/components/HeartLock";
 import FiberInput from "@/components/FiberInput";
 
-// 鈹€鈹€ Starburst particle for exit animation 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ── Starburst particle for exit animation ─────────────────────
 function Sparkle({ delay, angle, distance }: { delay: number; angle: number; distance: number }) {
   const r = (angle * Math.PI) / 180;
   const x = Math.cos(r) * distance;
@@ -24,7 +24,7 @@ function Sparkle({ delay, angle, distance }: { delay: number; angle: number; dis
   );
 }
 
-// 鈹€鈹€ Ripple ring 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ── Ripple ring ───────────────────────────────────────────────
 function RippleRing({ delay = 0 }: { delay?: number }) {
   return (
     <motion.div
@@ -36,10 +36,10 @@ function RippleRing({ delay = 0 }: { delay?: number }) {
   );
 }
 
-// 鈹€鈹€ Keyboard hint 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ── Keyboard hint ─────────────────────────────────────────────
 const KEY_DISPLAY = typeof navigator !== "undefined" && /mac|iphone|ipad/i.test(navigator.platform) ? "?" : "Enter";
 
-// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
+// ═════════════════════════════════════════════════════════════
 export default function LoginPage() {
   const router = useRouter();
   const [phase, setPhase] = useState<"idle" | "form" | "exiting">("idle");
@@ -50,7 +50,7 @@ export default function LoginPage() {
   const [clicked, setClicked] = useState(false);
   const [rippleKey, setRippleKey] = useState(0);
 
-  // 鈹€鈹€ Trigger the unlock ceremony 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── Trigger the unlock ceremony ───────────────────────────
   const handleUnlock = useCallback(() => {
     if (phase !== "idle") return;
     setClicked(true);
@@ -59,7 +59,7 @@ export default function LoginPage() {
     setTimeout(() => setPhase("form"), 650);
   }, [phase]);
 
-  // 鈹€鈹€ Keydown handler for Enter key 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── Keydown handler for Enter key ─────────────────────────
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && phase === "idle") {
@@ -69,7 +69,7 @@ export default function LoginPage() {
     [phase, handleUnlock]
   );
 
-  // 鈹€鈹€ Submit handler 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── Submit handler ────────────────────────────────────────
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
@@ -84,18 +84,18 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("鎭嬬埍涔嬫棩涓嶆纭紝鍐嶈瘯璇曞惂");
+      setError("恋爱之日不正确，再试试吧");
       return;
     }
 
-    // 鈹€鈹€ Login success 鈥?begin exit ceremony! 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    // ── Login success — begin exit ceremony! ──────────────
     setPhase("exiting");
     await new Promise((r) => setTimeout(r, 1200));
     router.push("/");
     router.refresh();
   }
 
-  // 鈹€鈹€ Banner for error state 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── Banner for error state ─────────────────────────────────
   const [showError, setShowError] = useState(false);
   const handleFormError = useCallback((msg: string) => {
     setError(msg);
@@ -109,7 +109,7 @@ export default function LoginPage() {
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      {/* 鈹€鈹€ Ripple overlay (only during unfold) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */}
+      {/* ── Ripple overlay (only during unfold) ─────────────── */}
       {clicked && phase !== "exiting" && (
         <div className="fixed inset-0 pointer-events-none z-20" key={rippleKey}>
           <RippleRing delay={0} />
@@ -118,7 +118,7 @@ export default function LoginPage() {
         </div>
       )}
 
-      {/* 鈹€鈹€ EXIT OVERLAY 鈥?expanding circle reveal 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */}
+      {/* ── EXIT OVERLAY — expanding circle reveal ─────────── */}
       <AnimatePresence mode="wait">
         {phase === "exiting" ? (
           <motion.div
@@ -150,14 +150,14 @@ export default function LoginPage() {
               transition={{ duration: 1, ease: "easeOut" }}
             />
 
-            {/* "杩涘叆涓?.." text */}
+            {/* "进入中..." text */}
             <motion.p
               className="relative z-10 text-rose-400/70 text-sm tracking-[0.3em] font-[425]"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              娆㈣繋鍥炲
+              欢迎回家
             </motion.p>
           </motion.div>
         ) : (
@@ -165,7 +165,7 @@ export default function LoginPage() {
             key="login-content"
             className="relative z-10 flex flex-col items-center w-full"
           >
-            {/* 鈺愨晲鈺愨晲鈺愨晲鈺?Top section: title + heart lock 鈺愨晲鈺愨晲鈺愨晲鈺?*/}
+            {/* ═══════ Top section: title + heart lock ═══════ */}
            <motion.div
              className="flex flex-col items-center mb-2"
               layout
@@ -190,7 +190,7 @@ export default function LoginPage() {
                 animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
               >
-                瀹?&amp; 鐒?
+                安 &amp; 焕
               </motion.h1>
 
               {/* Subtitle */}
@@ -198,7 +198,7 @@ export default function LoginPage() {
               className="text-[10px] text-rose-300/30 tracking-[0.42em] mt-2 font-[350]"
                 animate={phase === "form" ? { opacity: 0.3 } : { opacity: 0.6 }}
               >
-                鎴戜滑鐨勫皬灞?
+                我们的小屋
               </motion.p>
 
               {/* Heart lock */}
@@ -225,7 +225,7 @@ export default function LoginPage() {
               </motion.div>
             </motion.div>
 
-            {/* 鈺愨晲鈺愨晲鈺愨晲鈺?Idle hint text 鈺愨晲鈺愨晲鈺愨晲鈺?*/}
+            {/* ═══════ Idle hint text ═══════ */}
             <AnimatePresence mode="wait">
               {phase === "idle" && (
                 <motion.div
@@ -242,10 +242,10 @@ export default function LoginPage() {
                     animate={{ opacity: [0.35, 0.65, 0.35] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    杈撳叆鎴戜滑鐨勬亱鐖变箣鏃ワ紝鍞ら啋灏忓眿
+                    输入我们的恋爱之日，唤醒小屋
                   </motion.p>
 
-                  {/* "寮€鍚洖蹇? button */}
+                  {/* "开启回忆" button */}
                  <motion.button
                    onClick={handleUnlock}
                     whileHover={{ scale: 1.05, boxShadow: "0 0 35px rgba(245,168,160,0.18)" }}
@@ -253,7 +253,7 @@ export default function LoginPage() {
                     className="group relative px-10 py-3.5 rounded-2xl bg-white/30 backdrop-blur-md border border-white/30 text-sm text-rose-400/70 tracking-[0.2em] font-[425] hover:bg-white/50 hover:border-rose-300/30 hover:text-rose-500/80 transition-all duration-500 cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
-                      寮€鍚洖蹇?
+                      开启回忆
                       <kbd className="text-[11px] text-rose-300/40 font-[350] tracking-wider bg-white/20 px-2 py-0.5 rounded-lg">
                         {KEY_DISPLAY}
                       </kbd>
@@ -267,7 +267,7 @@ export default function LoginPage() {
               )}
             </AnimatePresence>
 
-            {/* 鈺愨晲鈺愨晲鈺愨晲鈺?Form (revealed after unlock) 鈺愨晲鈺愨晲鈺愨晲鈺?*/}
+            {/* ═══════ Form (revealed after unlock) ═══════ */}
             <AnimatePresence>
               {phase === "form" && (
                 <motion.div
@@ -288,11 +288,10 @@ export default function LoginPage() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <FiberInput
                         id="phone"
-                        label="鎴戜滑璁よ瘑鍟?
+                        label="我们认识啦"
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                       
                         autoComplete="tel"
                         autoFocus
                         required
@@ -300,11 +299,10 @@ export default function LoginPage() {
 
                       <FiberInput
                         id="password"
-                        label="鎭嬬埍涔嬫棩"
+                        label="恋爱之日"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                       
                         autoComplete="current-password"
                         required
                       />
@@ -371,11 +369,11 @@ export default function LoginPage() {
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                                   />
                                 </svg>
-                                楠岃瘉涓?..
+                                验证中...
                               </>
                             ) : (
                               <>
-                                <span>杩涘叆灏忓眿</span>
+                                <span>进入小屋</span>
                                 <svg
                                   className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
                                   fill="none"
