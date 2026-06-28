@@ -8,8 +8,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: "phone",
       credentials: {
-        phone: { label: "手机�?, type: "tel" },
-        password: { label: "密码", type: "password" },
+        phone: { label: "鎵嬫満鍙?, type: "tel" },
+        password: { label: "瀵嗙爜", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.phone || !credentials?.password) {
