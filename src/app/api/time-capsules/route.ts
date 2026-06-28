@@ -11,7 +11,6 @@ export async function GET() {
 
     const capsules = await getVisibleCapsules(session.user.id)
     const currentUserId = session.user.id
-    const now = new Date().toISOString()
     const list = capsules.map((c) => ({
       id: c.id,
       title: c.title,
@@ -21,7 +20,7 @@ export async function GET() {
       toUserName: c.toUserName,
       unlockAt: c.unlockAt,
       createdAt: c.createdAt,
-      isLocked: c.toUserId === currentUserId && c.unlockAt > now,
+      isLocked: c.toUserId === currentUserId && new Date(c.unlockAt) > new Date(),
       isSender: c.fromUserId === currentUserId,
     }))
 

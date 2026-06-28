@@ -19,8 +19,7 @@ export async function GET(
       return NextResponse.json({ error: "时光胶囊不存在" }, { status: 404 })
     }
 
-    const now = new Date().toISOString()
-    const isRecipientLocked = capsule.toUserId === session.user.id && capsule.unlockAt > now
+    const isRecipientLocked = capsule.toUserId === session.user.id && new Date(capsule.unlockAt) > new Date()
 
     const result = {
       id: capsule.id,
