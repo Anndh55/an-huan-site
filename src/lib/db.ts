@@ -21,12 +21,21 @@ function convertPlaceholders(sql: string): string {
   return sql.replace(/\?/g, () => `$${++idx}`)
 }
 
+// Quote unquoted camelCase identifiers for PostgreSQL case sensitivity
+function quoteIdentifiers(sql: string): string {
+  return sql.replace(
+    /\b([a-z]+[A-Z][a-zA-Z0-9]*)\b/g,
+    (match) => `"${match}"`
+  )
+}
+
 export function getDb() {
   return {
     async execute({ sql: sqlStr, args = [] }: { sql: string; args?: any[] }) {
       if (usePostgres) {
         const pgSql = convertPlaceholders(sqlStr)
-        const { rows } = await vercelSql.query(pgSql, args)
+        const quotedSql = quoteIdentifiers(pgSql)
+        const { rows } = await vercelSql.query(quotedSql, args)
         return { rows }
       } else {
         const db = getSqliteClient()
@@ -380,3 +389,4 @@ export async function deleteCapsule(id: string, userId: string): Promise<boolean
   })
   return true
 }
+
