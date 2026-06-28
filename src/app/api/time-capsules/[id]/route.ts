@@ -81,10 +81,8 @@ export async function PUT(
       if (isNaN(unlockDate.getTime())) {
         return NextResponse.json({ error: "解锁时间格式不正确" }, { status: 400 })
       }
-      if (unlockDate <= new Date()) {
-        return NextResponse.json({ error: "解锁时间必须在未来" }, { status: 400 })
-      }
-      updates.unlockAt = unlockDate.toISOString()
+  
+      updates.unlockAt = unlockAt
     }
 
     if (Object.keys(updates).length === 0) {

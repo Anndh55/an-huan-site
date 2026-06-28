@@ -67,16 +67,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "解锁时间格式不正确" }, { status: 400 })
     }
 
-    if (unlockDate <= new Date()) {
-      return NextResponse.json({ error: "解锁时间必须在未来" }, { status: 400 })
-    }
+
 
     const capsule = await createCapsule(
       session.user.id,
       toUserId,
       title.trim(),
       content.trim(),
-      unlockDate.toISOString()
+      unlockAt
     )
 
     return NextResponse.json({ capsule }, { status: 201 })

@@ -269,17 +269,18 @@ export interface CapsuleRow {
 
 export async function getVisibleCapsules(userId: string): Promise<CapsuleRow[]> {
   const db = getDb()
-  const now = new Date().toISOString()
+  const now = new Date()
   const { rows } = await db.execute({
     sql: `SELECT tc.*, fu.name as fromUserName, tu.name as toUserName
           FROM "TimeCapsule" tc
           JOIN "User" fu ON fu.id = tc.fromUserId
           JOIN "User" tu ON tu.id = tc.toUserId
-          WHERE tc.fromUserId = ? OR (tc.toUserId = ? AND tc.unlockAt <= ?)
+          WHERE tc.fromUserId = ? OR tc.toUserId = ?
           ORDER BY tc.unlockAt ASC`,
-    args: [userId, userId, now],
+    args: [userId, userId],
   })
-  return rows as unknown as CapsuleRow[]
+  const allCapsules = rows as unknown as CapsuleRow[]
+  return allCapsules.filter(c => c.fromUserId === userId || (c.toUserId === userId && new Date(c.unlockAt) <= now))
 }
 
 export async function createCapsule(
