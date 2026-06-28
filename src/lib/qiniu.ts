@@ -1,7 +1,7 @@
 import crypto from "crypto"
 
 function requireEnv(name: string): string {
-  const value = process.env[name]
+  const value = (process.env[name] || "").trim()
   if (!value) {
     throw new Error("Missing required Qiniu environment variable: " + name)
   }
@@ -11,19 +11,6 @@ function requireEnv(name: string): string {
 function getAccessKey(): string { return requireEnv("QINIU_ACCESS_KEY") }
 function getSecretKey(): string { return requireEnv("QINIU_SECRET_KEY") }
 function getBucket(): string { return requireEnv("QINIU_BUCKET") }
-
-const UPLOAD_ENDPOINTS: Record<string, string> = {
-  "z0": "https://upload.qiniup.com/",
-  "z1": "https://upload-z1.qiniup.com/",
-  "z2": "https://upload-z2.qiniup.com/",
-  "na0": "https://upload-na0.qiniup.com/",
-  "as0": "https://upload-as0.qiniup.com/",
-}
-
-function getUploadEndpoint(): string {
-  const zone = process.env.QINIU_ZONE || "z0"
-  return UPLOAD_ENDPOINTS[zone] || UPLOAD_ENDPOINTS["z0"]
-}
 
 function urlsafeBase64Encode(data: string | Buffer): string {
   const buf = typeof data === "string" ? Buffer.from(data, "utf-8") : data
@@ -45,6 +32,8 @@ function generateUploadToken(key: string): string {
   return getAccessKey() + ":" + encodedSign + ":" + encodedPutPolicy
 }
 
+const QINIU_UPLOAD_URL = "https://upload-z2.qiniup.com/"
+
 export async function uploadToQiniu(buffer: Buffer, key: string): Promise<string> {
   const token = generateUploadToken(key)
   const file = new File([buffer as unknown as Blob], key)
@@ -53,8 +42,7 @@ export async function uploadToQiniu(buffer: Buffer, key: string): Promise<string
   formData.append("key", key)
   formData.append("file", file)
 
-  const uploadUrl = getUploadEndpoint()
-  const response = await fetch(uploadUrl, { method: "POST", body: formData })
+  const response = await fetch(QINIU_UPLOAD_URL, { method: "POST", body: formData })
 
   if (!response.ok) {
     const errorText = await response.text()
