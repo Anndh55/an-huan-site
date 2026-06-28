@@ -84,7 +84,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("纪念日密码不正确，再试试吧");
+      setError("恋爱之日不正确，再试试吧");
       return;
     }
 
@@ -242,7 +242,7 @@ export default function LoginPage() {
                     animate={{ opacity: [0.35, 0.65, 0.35] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    输入我们的纪念日密码，唤醒小屋
+                    输入我们的恋爱之日，唤醒小屋
                   </motion.p>
 
                   {/* "开启回忆" button */}

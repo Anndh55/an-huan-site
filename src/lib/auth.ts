@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+﻿import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { findUserByPhone } from "./db"
@@ -8,8 +8,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: "phone",
       credentials: {
-        phone: { label: "鎵嬫満鍙?, type: "tel" },
-        password: { label: "瀵嗙爜", type: "password" },
+        phone: { label: "我们认识啦", type: "tel" },
+        password: { label: "密码", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.phone || !credentials?.password) {
