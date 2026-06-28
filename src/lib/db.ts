@@ -24,7 +24,7 @@ function convertPlaceholders(sql: string): string {
 // Quote unquoted camelCase identifiers for PostgreSQL case sensitivity
 function quoteIdentifiers(sql: string): string {
   return sql.replace(
-    /\b([a-z]+[A-Z][a-zA-Z0-9]*)\b/g,
+    /(?<!")(\b[a-z]+[A-Z][a-zA-Z0-9]*\b)/g,
     (match) => `"${match}"`
   )
 }
