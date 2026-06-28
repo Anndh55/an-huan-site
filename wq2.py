@@ -1,4 +1,5 @@
-﻿import crypto from "crypto"
+﻿import sys
+content = """import crypto from "crypto"
 
 function requireEnv(name: string): string {
   const value = (process.env[name] || "").trim()
@@ -16,8 +17,8 @@ function urlsafeBase64Encode(data: string | Buffer): string {
   const buf = typeof data === "string" ? Buffer.from(data, "utf-8") : data
   return buf
     .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
+    .replace(/\\+/g, "-")
+    .replace(/\\//g, "_")
     .replace(/=+$/g, "")
 }
 
@@ -34,33 +35,15 @@ function generateUploadToken(key: string): string {
 
 const QINIU_UPLOAD_URL = "https://upload-z2.qiniup.com/"
 
-// Build multipart/form-data body manually to avoid Vercel runtime polyfill issues
-function buildMultipartBody(token: string, key: string, buffer: Buffer, boundary: string): Buffer {
-  const header = (
-    '--' + boundary + '\r\n' +
-    'Content-Disposition: form-data; name="token"\r\n\r\n' +
-    token + '\r\n' +
-    '--' + boundary + '\r\n' +
-    'Content-Disposition: form-data; name="key"\r\n\r\n' +
-    key + '\r\n' +
-    '--' + boundary + '\r\n' +
-    'Content-Disposition: form-data; name="file"; filename="' + key.replace(/^.*\//, '') + '"\r\n' +
-    'Content-Type: application/octet-stream\r\n\r\n'
-  )
-  const footer = '\r\n--' + boundary + '--\r\n'
-  return Buffer.concat([Buffer.from(header, 'utf-8'), buffer, Buffer.from(footer, 'utf-8')])
-}
-
 export async function uploadToQiniu(buffer: Buffer, key: string): Promise<string> {
   const token = generateUploadToken(key)
-  const boundary = '----qiniu' + Date.now().toString(36)
-  const body = buildMultipartBody(token, key, buffer, boundary)
+  const file = new File([buffer as unknown as Blob], key)
+  const formData = new FormData()
+  formData.append("token", token)
+  formData.append("key", key)
+  formData.append("file", file)
 
-  const response = await fetch(QINIU_UPLOAD_URL, {
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data; boundary=" + boundary },
-    body,
-  })
+  const response = await fetch(QINIU_UPLOAD_URL, { method: "POST", body: formData })
 
   if (!response.ok) {
     const errorText = await response.text()
@@ -71,3 +54,7 @@ export async function uploadToQiniu(buffer: Buffer, key: string): Promise<string
   const baseUrl = process.env.QINIU_DOMAIN || "https://" + getBucket() + ".qnssl.com"
   return baseUrl + "/" + (result.key || key)
 }
+"""
+with open('src/lib/qiniu.ts', 'w', encoding='utf-8') as f:
+    f.write(content)
+print('OK')
