@@ -78,26 +78,26 @@ async function main() {
   console.log("Tables created. Seeding data...");
 
   // === Seed Users (idempotent via ON CONFLICT) ===
-  const password = await bcrypt.hash("password123", 10);
-  const anUser = { id: crypto.randomUUID(), name: '安' };
-  const huanUser = { id: crypto.randomUUID(), name: '焕' };
+  const password = await bcrypt.hash("2026525", 10);
+  const anUser = { id: crypto.randomUUID(), name: '�? };
+  const huanUser = { id: crypto.randomUUID(), name: '�? };
 
   await sql`
     INSERT INTO "User" ("id", "phone", "password", "name")
-    VALUES (${anUser.id}, '13800138001', ${password}, ${anUser.name})
+    VALUES (${anUser.id}, '2026320', ${password}, ${anUser.name})
     ON CONFLICT (phone) DO NOTHING
   `
 
   await sql`
     INSERT INTO "User" ("id", "phone", "password", "name")
-    VALUES (${huanUser.id}, '13800138002', ${password}, ${huanUser.name})
+    VALUES (${huanUser.id}, '2026319', ${password}, ${huanUser.name})
     ON CONFLICT (phone) DO NOTHING
   `
 
   // Fetch actual user records (in case they already existed)
   const { rows: users } = await sql`SELECT id, name, phone FROM "User" ORDER BY phone`;
-  const an = users.find((u: any) => u.phone === "13800138001")!;
-  const huan = users.find((u: any) => u.phone === "13800138002")!;
+  const an = users.find((u: any) => u.phone === "2026320")!;
+  const huan = users.find((u: any) => u.phone === "2026319")!;
 
   // === Seed TOGETHER Anniversary (idempotent via existence check) ===
   const { rows: existingAnn } = await sql`
@@ -112,7 +112,7 @@ async function main() {
       VALUES (
         ${crypto.randomUUID()},
         ${an.id},
-        '在一起那天',
+        '在一起那�?,
         '2024-01-01T00:00:00.000Z',
         'TOGETHER',
         FALSE,
@@ -125,7 +125,7 @@ async function main() {
   }
 
   // === Seed Welcome Message (idempotent via content check) ===
-  const welcomeContent = '欢迎来到安焕小屋！这是我们的专属空间。';
+  const welcomeContent = '欢迎来到安焕小屋！这是我们的专属空间�?;
   const { rows: existingMsg } = await sql`
     SELECT id FROM "Message"
     WHERE content = ${welcomeContent} AND "userId" = ${an.id}

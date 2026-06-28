@@ -8,7 +8,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: "phone",
       credentials: {
-        phone: { label: "手机号", type: "tel" },
+        phone: { label: "手机�?, type: "tel" },
         password: { label: "密码", type: "password" },
       },
       async authorize(credentials) {
