@@ -202,9 +202,6 @@ export default function TimeCapsulePage() {
     )
   }
 
-  const now = new Date()
-  const minUnlock = new Date(now.getTime() + 60 * 60 * 1000)
-  const minUnlockStr = minUnlock.toISOString().slice(0, 16)
 
   return (
     <div className="max-w-lg mx-auto flex flex-col min-h-[calc(100dvh-4.5rem)] px-4">
@@ -299,7 +296,6 @@ export default function TimeCapsulePage() {
                   <input
                     type="datetime-local"
                     value={formUnlockAt}
-                    min={minUnlockStr}
                     onChange={(e) => setFormUnlockAt(e.target.value)}
                     className="w-full rounded-lg bg-white/60 border border-rose-200/30 px-3.5 py-2 text-sm text-gray-700 focus:outline-none focus:border-rose-300 focus:bg-white/80 transition-all duration-200"
                   />
