@@ -419,7 +419,7 @@ export default function TimeCapsulePage() {
                           </span>
                         )}
                         {capsule.isSender && (
-                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex gap-1 opacity-70 hover:opacity-100 transition-opacity duration-200" onClick={(e) => e.stopPropagation()}>
                             <button onClick={() => handleEdit(capsule)}
                               className="w-6 h-6 flex items-center justify-center rounded-md bg-white/70 hover:bg-amber-100/80 text-amber-400 hover:text-amber-600 shadow-sm border border-amber-200/30 transition-all duration-200"
                               title="编辑">
