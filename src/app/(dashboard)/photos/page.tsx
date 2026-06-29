@@ -194,7 +194,7 @@ export default function PhotosPage() {
             >
               <div className="aspect-square overflow-hidden bg-rose-50/50">
                 <img
-                  src={photo.imageUrl}
+                  src={`/api/photos/${photo.id}/image`}
                   alt={photo.caption || "照片"}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
@@ -332,7 +332,7 @@ export default function PhotosPage() {
               {/* 左侧：照片 */}
               <div className="flex-1 min-w-0 bg-black/5 flex items-center justify-center">
                 <img
-                  src={lightboxPhoto.imageUrl}
+                  src={`/api/photos/${lightboxPhoto.id}/image`}
                   alt={lightboxPhoto.caption || "照片"}
                   className="w-full h-full object-contain"
                 />

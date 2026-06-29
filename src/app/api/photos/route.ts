@@ -12,7 +12,8 @@ export async function GET() {
       return NextResponse.json({ error: "未登录" }, { status: 401 })
     }
     const photos = await getPhotos()
-    return NextResponse.json({ photos })
+    const list = photos.map(p => ({ ...p, imageUrl: "" }))
+    return NextResponse.json({ photos: list })
   } catch (error) {
     console.error("Failed to fetch photos:", error)
     return NextResponse.json({ error: "获取照片失败" }, { status: 500 })
