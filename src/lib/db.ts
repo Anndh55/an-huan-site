@@ -280,7 +280,7 @@ export async function getVisibleCapsules(userId: string): Promise<CapsuleRow[]> 
     args: [userId, userId],
   })
   const allCapsules = rows as unknown as CapsuleRow[]
-  return allCapsules.filter(c => c.fromUserId === userId || (c.toUserId === userId && new Date(c.unlockAt) <= now))
+  return allCapsules
 }
 
 export async function createCapsule(

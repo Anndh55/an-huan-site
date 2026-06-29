@@ -86,7 +86,6 @@ export default function TimeCapsulePage() {
       setExpandedContent(null)
       return
     }
-    if (capsule.isLocked && !capsule.isSender) return
 
     setExpandedId(capsule.id)
     setExpandedContent(null)
